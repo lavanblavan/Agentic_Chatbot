@@ -1,10 +1,15 @@
 from PIL import Image
 import pytesseract
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe' # Example for Windows
+import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+
 
 class TextExtractor:
     def __init__(self, lang='eng'):
         self.lang = lang
+        
 
     def image_to_text(self, image: Image.Image) -> str:
         """
@@ -12,7 +17,8 @@ class TextExtractor:
         """
         
         text = pytesseract.image_to_string(image, lang=self.lang)
-        print(f"Extracted Text: {text[:100]}...")  # Print first 100 chars
+        
+        # print(f"Extracted Text: {text[:100]}...")  # Print first 100 chars
         return text
 
     def images_to_texts(self, images):
