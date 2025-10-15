@@ -1,8 +1,9 @@
 import os
 import sys
 from pathlib import Path
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from Settings.Settings import Config
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+from Settings import Settings as settings_module
+
 from Scripts_Document.Extraction import TextExtractor
 from Scripts_Document.preprocess import DocumentPreprocessor
 from Scripts_Document.Summary_creator import summary_create 
@@ -14,13 +15,13 @@ class DocumentSummarizer:
         self.preprocessor = DocumentPreprocessor()
         self.summary_creator = summary_create()
         self.documents = []
-        self.config = Config()
+        self.config = settings_module.Config()
 
     def get_txt(self):
         """
         Load Documents
         """
-        txt_folder_path = Config.documents_folder 
+        txt_folder_path = self.config.documents_folder 
         print("TXT Folder Path:", txt_folder_path)
         for folder in os.listdir(txt_folder_path):
             print("Folder in documents folder:", folder)
@@ -37,7 +38,7 @@ class DocumentSummarizer:
         """
         Load Documents
         """
-        pdf_folder_path = Config.documents_folder 
+        pdf_folder_path = self.config.documents_folder 
         print("PDF Folder Path:", pdf_folder_path)
         for folder in os.listdir(pdf_folder_path):
             print("Folder in documents folder:", folder)
@@ -49,7 +50,7 @@ class DocumentSummarizer:
         print(f"Found {len(self.documents)} PDF documents.")
         return self.documents
     def main(self):
-        pdfs = self.get_pdf(Config.documents_folder)
+        pdfs = self.get_pdf(self.config.documents_folder)
         for pdf in pdfs:
             array_of_summaries = []
             print(f"Processing {pdf}...")
@@ -79,10 +80,7 @@ class DocumentSummarizer:
             folder_summaries = []
 
             for txt in files:
-                print(f"Processing {txt}...")
-                preprocessed_text = self.preprocessor.process_txt(txt)
-                text = self.text_extractor.images_to_texts(preprocessed_text)
-
+                
                 for i in text:
                     summary = self.summary_creator.find_minititles(i)
                     folder_summaries.append(summary)
