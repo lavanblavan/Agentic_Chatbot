@@ -50,6 +50,7 @@ Sentence Transformers are great for creating vector embeddings.
     print("📄 Tokenized sentences:")
     for s in sentences:
         print("-", s)
+    
 
     print("\n📈 Embeddings shape:", embeddings.shape)
  
